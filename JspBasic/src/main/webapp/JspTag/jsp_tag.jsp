@@ -40,8 +40,6 @@
     	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 " 
     			+"E요일 a hh시 mm분 ss초");
     	
-    	
-    	
     %>
     
 <!DOCTYPE html>
