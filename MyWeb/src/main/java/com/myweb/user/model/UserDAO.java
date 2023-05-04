@@ -13,10 +13,10 @@ import javax.sql.DataSource;
 //데이터베이스 접속 및 sql문 실행을 전담하는 비즈니스 로직으로 이루어진 객체
 //무분별한 객체 생성을 막기 위해 싱글톤 디자인 패턴으로 구축합니다.
 public class UserDAO {
-	
+
 	//커넥션 풀의 정보를 담을 변수를 선언.
 	private DataSource ds;
-	
+
 	private UserDAO() {
 		//커넥션 풀 정보 불러오기.
 		try {
@@ -26,18 +26,18 @@ public class UserDAO {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private static UserDAO dao = new UserDAO();
-	
+
 	public static UserDAO getInstance() {
 		if(dao == null) {
 			dao = new UserDAO();
 		}
 		return dao;
 	}
-	
+
 	//////////////////////////////////////////////////////
-	
+
 	//회원 중복 여부 확인
 	public boolean confirmId(String id) {
 		String sql = "SELECT * FROM my_user WHERE user_id = ?";
@@ -52,7 +52,7 @@ public class UserDAO {
 		}
 		return flag;
 	}
-
+	//회원 정보 저장
 	public void insetUser(UserVO vo) {
 		String sql = "INSERT INTO my_user VALUES(?,?,?,?,?)";
 		try(Connection conn = ds.getConnection();
@@ -66,7 +66,59 @@ public class UserDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 	}
-	
+	//로그인 판별
+	public int userCheck(String id, String pw) {
+		String sql = "SELECT user_pw FROM my_user WHERE user_id = ?";
+		int result = 0;
+		try (Connection conn = ds.getConnection();
+				PreparedStatement pstmt = conn.prepareStatement(sql);){
+			pstmt.setString(1, id);
+			ResultSet rs = pstmt.executeQuery();
+			if(rs.next()) {
+				String dbPw = rs.getString("user_pw");
+				if(dbPw.equals(pw)) result =1;
+				else result = 0;
+			} else result = -1;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	//유저를 가져오는 메서드
+	public UserVO getUserInfo(String id) {
+		UserVO user = null;
+		String sql = "SELECT * FROM my_user WHERE user_id= '" + id + "'";
+		try (Connection conn = ds.getConnection();
+				PreparedStatement pstmt = conn.prepareStatement(sql);
+				ResultSet rs = pstmt.executeQuery();) {
+			if(rs.next()) {
+			user = new UserVO(
+						rs.getString("user_id"),
+						rs.getString("user_pw"),
+						rs.getString("user_name"),
+						rs.getString("user_email"),
+						rs.getString("user_address")
+					);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return user;
+	}
+	//비밀번호 변경 메서드
+	public void changePassword(String id, String newPw) {
+		String sql = "UPDATE my_user SET user_pw = ? WHERE user_id = ?";
+		try (Connection conn = ds.getConnection();
+				PreparedStatement pstmt = conn.prepareStatement(sql)) {
+			pstmt.setString(1, newPw);
+			pstmt.setString(2, id);
+			pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 }
