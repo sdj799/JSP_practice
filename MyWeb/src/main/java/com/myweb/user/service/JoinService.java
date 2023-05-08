@@ -41,7 +41,7 @@ public class JoinService implements IUserService {
 							request.getParameter("email"),
 							request.getParameter("address")
 						);
-				dao.insetUser(vo);
+				dao.insertUser(vo);
 				htmlCode = "<script>\r\n"
                         + "                alert('회원가입을 환영합니다!');\r\n"
                         + "                location.href='/MyWeb/loginPage.user';\r\n"

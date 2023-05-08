@@ -1,6 +1,5 @@
 package com.myweb.user.service;
 
-import java.io.IOException;
 import java.io.PrintWriter;
 
 import javax.servlet.http.HttpServletRequest;
@@ -36,9 +35,10 @@ public class ChangePwService implements IUserService {
 		HttpSession session = request.getSession();
 		UserVO user = (UserVO) session.getAttribute("user");
 		String id = user.getUserId();
+//		String id = ((UserVO)request.getSession().getAttribute("user")).getUserId();
 		
 		String htmlCode;
-		PrintWriter out;
+		PrintWriter out = null;
 		try {
 			out = response.getWriter();
 			if(dao.userCheck(id, oldPw) == 0) {
@@ -48,7 +48,6 @@ public class ChangePwService implements IUserService {
 	                    + "</script>";
 				out.print(htmlCode);
 				out.flush();
-				out.close();
 			} else {
 				dao.changePassword(id , newPw);
 				htmlCode = "<script>\r\n"
@@ -57,13 +56,12 @@ public class ChangePwService implements IUserService {
                         + "</script>";
 				out.print(htmlCode);
 				out.flush();
-				out.close();
 			}
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			out.close();
 		}
-		
-		
 		
 	}
 

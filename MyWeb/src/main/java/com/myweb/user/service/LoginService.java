@@ -5,14 +5,12 @@ import java.io.PrintWriter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.sql.DataSource;
 
 import com.myweb.user.model.UserDAO;
 import com.myweb.user.model.UserVO;
 
 public class LoginService implements IUserService {
 
-	private  DataSource ds;
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) {
 		

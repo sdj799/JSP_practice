@@ -53,7 +53,7 @@ public class UserDAO {
 		return flag;
 	}
 	//회원 정보 저장
-	public void insetUser(UserVO vo) {
+	public void insertUser(UserVO vo) {
 		String sql = "INSERT INTO my_user VALUES(?,?,?,?,?)";
 		try(Connection conn = ds.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -81,7 +81,7 @@ public class UserDAO {
 				if(dbPw.equals(pw)) result =1;
 				else result = 0;
 			} else result = -1;
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -95,13 +95,13 @@ public class UserDAO {
 				PreparedStatement pstmt = conn.prepareStatement(sql);
 				ResultSet rs = pstmt.executeQuery();) {
 			if(rs.next()) {
-			user = new UserVO(
+				user = new UserVO(
 						rs.getString("user_id"),
 						rs.getString("user_pw"),
 						rs.getString("user_name"),
 						rs.getString("user_email"),
 						rs.getString("user_address")
-					);
+						);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -119,6 +119,33 @@ public class UserDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	//회원정보 수정 메서드
+	public void updateUser(UserVO user) {
+		String sql = "UPDATE my_user SET user_name = ? , user_email = ? , "
+				+ "user_address = ?  WHERE user_id = ?";
+		try(Connection conn = ds.getConnection();
+				PreparedStatement pstmt = conn.prepareStatement(sql);) {
+			pstmt.setString(1, user.getUserName());
+			pstmt.setString(2, user.getUserEmail());
+			pstmt.setString(3, user.getUserAddress());
+			pstmt.setString(4, user.getUserId());
+			pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	//회원 탈퇴 메서드
+	public void deleteUser(String id) {
+		String sql ="DELETE FROM my_user WHERE user_id = ? ";
+		try(Connection conn = ds.getConnection();
+				PreparedStatement pstmt = conn.prepareStatement(sql)) {
+			pstmt.setString(1, id);
+			pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 	}
 
 }
