@@ -34,9 +34,7 @@ public class SearchService implements IBoardService {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			
 		}
-		
 		request.setAttribute("boardList", list);
 	}
 

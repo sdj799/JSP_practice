@@ -27,8 +27,6 @@ public class ContentService implements IBoardService {
          현재 글 번호와 일치하는 쿠키가 없다면 조회수를 올려주도록 하겠습니다.  
         */
 		
-		
-		
 		Cookie[] cookies = request.getCookies();
 		boolean flag = false;
 		
