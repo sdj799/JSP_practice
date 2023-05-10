@@ -32,14 +32,14 @@ public class ContentService implements IBoardService {
 		
 		if(cookies != null) {
 			for(Cookie c  : cookies) {
-				if(c.getName().equals(Integer.toString(bId))) {
+				if(c.getName().equals(String.valueOf(bId))) {
 					flag = true;
 					break;
 				}
 			}
 			if(!flag) {
 				dao.upHit(bId);
-				Cookie coo = new Cookie(Integer.toString(bId), "id_cookie");
+				Cookie coo = new Cookie(String.valueOf(bId), String.valueOf(bId));
 				coo.setMaxAge(15);
 				response.addCookie(coo);
 			}
