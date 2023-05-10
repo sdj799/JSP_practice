@@ -16,7 +16,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 
-@WebFilter("/LoginAuthFilter")
+//@WebFilter("*.board") .board로 끝나는 모든 요청에 반응.
+@WebFilter(
+		filterName = "loginAuth",
+		urlPatterns = {"/write.board", "/modify.board", "/delete.board", "/myPage.user", "/modPage.user"},
+		servletNames = {"basic"}
+		)
 public class LoginAuthFilter extends HttpFilter implements Filter {
        
     

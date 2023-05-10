@@ -24,12 +24,12 @@
 </head>
 <body>
 
-	<c:if test="${user == null}">
+	<%-- <c:if test="${user == null}">
 		<script>
 			alert('회원만 이용 가능한 게시판 입니다. 로그인 해 주세요.')
 			location.href="/MyWeb/loginPage.user";
 		</script>
-	</c:if>
+	</c:if> --%>
 
 	<jsp:include page="../include/header.jsp"/>
 
